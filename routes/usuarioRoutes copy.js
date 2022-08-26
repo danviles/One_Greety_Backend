@@ -8,8 +8,8 @@ import {
   nuevoPassword,
   perfil,
   editarPerfil
-} from "../controllers/UsuarioController.js";
-import checkAuth from "../middleware/CheckAuth.js";
+} from "../controllers/usuarioController.js";
+import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 

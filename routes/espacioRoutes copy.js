@@ -14,8 +14,8 @@ import {
   aceptarPeticiones,
   agregarBaneo,
   eliminarBaneo
-} from "../controllers/EspacioController.js";
-import checkAuth from "../middleware/CheckAuth.js";
+} from "../controllers/espacioController.js";
+import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 

@@ -4,7 +4,7 @@ import { multerUpload } from "../config/multer.js";
 import {
   uploadImage,
   editImage
-} from "../controllers/FilesController.js";
+} from "../controllers/filesController.js";
 
 const router = express.Router();
 

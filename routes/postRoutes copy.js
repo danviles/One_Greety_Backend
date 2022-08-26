@@ -6,8 +6,8 @@ import {
   eliminarPost, 
   agregarRespuesta, 
   eliminarRespuesta
-} from "../controllers/PostController.js";
-import checkAuth from "../middleware/CheckAuth.js";
+} from "../controllers/postController.js";
+import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 

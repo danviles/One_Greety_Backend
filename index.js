@@ -1,10 +1,10 @@
 import express from "express";
-import conectarDB from "./config/DB.js";
+import conectarDB from "./config/dB.js";
 import dotenv from "dotenv";
-import usuarioRoutes from "./routes/UsuarioRoutes.js";
-import espacioRoutes from "./routes/EspacioRoutes.js";
-import postRoutes from "./routes/PostRoutes.js";
-import filesRoutes from "./routes/FilesRoutes.js";
+import usuarioRoutes from "./routes/usuarioRoutes.js";
+import espacioRoutes from "./routes/espacioRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
+import filesRoutes from "./routes/filesRoutes.js";
 import connectCloudinary from "./config/cloudinary.js";
 import cors from "cors";
 
