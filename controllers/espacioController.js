@@ -66,7 +66,7 @@ const actualizarEspacio = async (req, res) => {
   espacio.esp_descripcion = req.body.esp_descripcion || espacio.esp_descripcion;
   espacio.esp_img_portada = req.body.esp_img_portada || espacio.esp_img_portada;
   espacio.esp_region = req.body.esp_region || espacio.esp_region;
-  espacio.esp_acceso = req.body.esp_acceso || espacio.esp_acceso;
+  espacio.esp_acceso = req.body.esp_acceso;
   espacio.esp_seguidores = req.body.esp_seguidores || espacio.esp_seguidores;
   espacio.esp_peticiones = req.body.esp_peticiones || espacio.esp_peticiones;
   espacio.esp_colaboradores =
