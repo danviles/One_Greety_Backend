@@ -13,21 +13,25 @@ import {
   aceptarPeticion,
   aceptarPeticiones,
   agregarBaneo,
-  eliminarBaneo
+  eliminarBaneo,
+  obtenerTodosEspacios
 } from "../controllers/espacioController.js";
 import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 
+router.get("/todos", obtenerTodosEspacios); 
+
 router
-  .route("/")
-  .get(checkAuth, obtenerEspacios)
-  .post(checkAuth, crearEspacio);
+.route("/")
+.get(checkAuth, obtenerEspacios)
+.post(checkAuth, crearEspacio);
 router
-  .route("/:id")
-  .get(checkAuth, obtenerEspacio)
-  .put(checkAuth, actualizarEspacio)
-  .delete(checkAuth, eliminarEspacio);
+.route("/:id")
+.get(checkAuth, obtenerEspacio)
+.put(checkAuth, actualizarEspacio)
+.delete(checkAuth, eliminarEspacio);
+
 
 router.post("/busqueda-usuarios", checkAuth, buscarUsuario);
 

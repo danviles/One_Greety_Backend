@@ -137,7 +137,7 @@ const agregarColaborador = async (req, res) => {
 
   const { _id } = req.body;
   const usuario = await Usuario.findOne({ _id }).select(
-    "-confirmado -createdAt -password -token -updatedAt -__v "
+    "-usu_confirmado -createdAt -usu_password -usu_token -updatedAt -__v "
   );
 
   if (!usuario) {
@@ -180,7 +180,7 @@ const eliminarColaborador = async (req, res) => {
 
   const { _id } = req.body;
   const usuario = await Usuario.findOne({ _id }).select(
-    "-confirmado -createdAt -password -token -updatedAt -__v "
+    "-usu_confirmado -createdAt -usu_password -usu_token -updatedAt -__v "
   );
 
   // Esta bien, se puede eliminar
@@ -201,7 +201,7 @@ const agregarPeticion = async (req, res) => {
 
   const { _id } = req.body;
   const usuario = await Usuario.findOne({ _id }).select(
-    "-confirmado -createdAt -password -token -updatedAt -__v "
+    "-usu_confirmado -createdAt -usu_password -usu_token -updatedAt -__v "
   );
 
   if (!usuario) {
@@ -234,7 +234,7 @@ const rechazarPeticion = async (req, res) => {
 
   const { _id } = req.body;
   const usuario = await Usuario.findOne({ _id }).select(
-    "-confirmado -createdAt -password -token -updatedAt -__v "
+    "-usu_confirmado -createdAt -usu_password -usu_token -updatedAt -__v "
   );
 
   if (!usuario) {
@@ -328,7 +328,7 @@ const agregarBaneo = async (req, res) => {
 
   const { _id } = req.body;
   const usuario = await Usuario.findOne({ _id }).select(
-    "-confirmado -createdAt -password -token -updatedAt -__v "
+    "-usu_confirmado -createdAt -password -token -updatedAt -__v "
   );
 
   if (!usuario) {
@@ -390,7 +390,14 @@ const eliminarBaneo = async (req, res) => {
   }
 };
 
-const obtenerPosts = async (req, res) => {};
+const obtenerTodosEspacios = async (req, res) => {
+  const espacios = await Espacio.find({})
+  .populate("esp_administrador", "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v");
+  res.json(espacios);
+};
+
+const obtenerPosts = async (req, res) => {
+};
 
 export {
   obtenerEspacios,
@@ -408,4 +415,5 @@ export {
   aceptarPeticiones,
   agregarBaneo,
   eliminarBaneo,
+  obtenerTodosEspacios
 };
