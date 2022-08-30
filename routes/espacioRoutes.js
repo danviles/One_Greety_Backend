@@ -14,13 +14,15 @@ import {
   aceptarPeticiones,
   agregarBaneo,
   eliminarBaneo,
-  obtenerTodosEspacios
+  obtenerTodosEspacios,
+  obtenerUnicoEspacio
 } from "../controllers/espacioController.js";
 import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 
 router.get("/todos", obtenerTodosEspacios); 
+router.get("/unico/:id", obtenerUnicoEspacio); 
 
 router
 .route("/")
