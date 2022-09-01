@@ -4,6 +4,7 @@ import generarJWT from "../helpers/generarJWT.js";
 import { emailRegistro, emailRecuperarPassword } from "../helpers/email.js";
 
 const registrar = async (req, res) => {
+  req.body.usu_email = req.body.usu_email.toLowerCase();
   const { usu_email } = req.body;
   const usuario = await Usuario.findOne({ usu_email });
 
@@ -30,6 +31,7 @@ const registrar = async (req, res) => {
 };
 
 const autenticar = async (req, res) => {
+  req.body.usu_email = req.body.usu_email.toLowerCase();
   const { usu_email, usu_password } = req.body;
   const usuario = await Usuario.findOne({ usu_email });
 
@@ -86,6 +88,7 @@ const confirmar = async (req, res) => {
 };
 
 const recuperarPassword = async (req, res) => {
+  req.body.usu_email = req.body.usu_email.toLowerCase();
   const { usu_email } = req.body;
   const usuario = await Usuario.findOne({ usu_email });
 

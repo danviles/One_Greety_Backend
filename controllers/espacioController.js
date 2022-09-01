@@ -3,13 +3,15 @@ import Usuario from "../models/Usuario.js";
 import cloudinary from "cloudinary";
 
 const obtenerEspacios = async (req, res) => {
-  const espacios = await Espacio.find({ 
-    $or: [
-      {esp_administrador: { $in: req.usuario._id}},
-      {esp_colaboradores: { $in: req.usuario._id}}
-    ]
-  });
-  res.json(espacios);
+  if(req.usuario){
+    const espacios = await Espacio.find({ 
+      $or: [
+        {esp_administrador: { $in: req.usuario._id}},
+        {esp_colaboradores: { $in: req.usuario._id}}
+      ]
+    });
+    res.json(espacios);
+  }
 };
 
 const obtenerEspacio = async (req, res) => {
