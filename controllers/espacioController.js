@@ -212,12 +212,17 @@ const agregarPeticion = async (req, res) => {
   }
 
   if (espacio.esp_seguidores.includes(usuario._id)) {
-    const error = new Error("El Usuario ya es seguidor de este espacio");
+    const error = new Error("El Usuario ya es seguidor de este espacio.");
     return res.status(404).json({ msg: error.message });
   }
 
   if (espacio.esp_peticiones.includes(usuario._id)) {
-    const error = new Error("El Usuario tiene pendiente su aprobación");
+    const error = new Error("El Usuario tiene pendiente su aprobación.");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (espacio.esp_baneados.includes(usuario._id)) {
+    const error = new Error("El Usuario esta expulsado del espacio.");
     return res.status(404).json({ msg: error.message });
   }
 
@@ -283,7 +288,7 @@ const aceptarPeticion = async (req, res) => {
     espacio.esp_administrador.toString() == req.usuario._id.toString() ||
     espacio.esp_colaboradores.includes(req.usuario._id)
   ) {
-    espacio.esp_peticiones.pull(usuario._id);
+    espacio.esp_peticiones.pop(usuario._id);
     espacio.esp_seguidores.push(usuario._id);
     usuario.usu_espacios.push(espacio._id);
     await espacio.save();
