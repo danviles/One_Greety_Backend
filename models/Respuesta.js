@@ -15,7 +15,12 @@ const respuestaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    res_media: [
+    res_media_img: [
+      {
+        type: string,
+      },
+    ],
+    res_media_id: [
       {
         type: string,
       },

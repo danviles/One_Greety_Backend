@@ -30,8 +30,12 @@ const crearPost = async (req, res) => {
     return res.status(401).json({ message: 'Acción no valida.' });
   }
 
+  const nuevoPost = new Post(req.body);
+  nuevoPost.post_creador = req.usuario._id;
+  espacioExistente.esp_foro.push(nuevoPost._id);
   try {
-    const nuevoPost = await Post.create(req.body);
+    await espacioExistente.save();
+    await nuevoPost.save();
     res.json({ message: 'Post creado correctamente', nuevoPost });
   } catch (error) {
     console.log(error);      

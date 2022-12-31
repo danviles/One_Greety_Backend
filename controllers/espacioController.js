@@ -20,6 +20,7 @@ const obtenerEspacio = async (req, res) => {
     .populate("esp_colaboradores", "usu_nombre usu_email usu_perfil_img")
     .populate("esp_baneados")
     .populate("esp_peticiones")
+    .populate("esp_foro")
     .populate("esp_seguidores", "usu_nombre usu_email usu_perfil_img");
 
   if (!espacio) {
@@ -399,7 +400,8 @@ const eliminarBaneo = async (req, res) => {
 
 const obtenerTodosEspacios = async (req, res) => {
   const espacios = await Espacio.find({})
-  .populate("esp_administrador", "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v");
+  .populate("esp_administrador", "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v")
+  .populate("esp_foro");
   res.json(espacios);
 };
 

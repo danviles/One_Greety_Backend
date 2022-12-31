@@ -28,7 +28,12 @@ const postSchema = new mongoose.Schema(
         ref: "Respuesta",
       },
     ],
-    post_media: [
+    post_media_img: [
+      {
+        type: String,
+      },
+    ],
+    post_media_id: [
       {
         type: String,
       },

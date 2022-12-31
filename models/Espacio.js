@@ -52,7 +52,13 @@ const espacioSchema = new mongoose.Schema({
     esp_acceso: {
       type: Boolean,
       default: true
-    }
+    },
+    esp_foro: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      }
+    ]
   },
   {
     timestamps: true,
