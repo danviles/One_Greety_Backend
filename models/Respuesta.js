@@ -15,16 +15,14 @@ const respuestaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    res_media_img: [
+    res_media_img: 
       {
         type: string,
       },
-    ],
-    res_media_id: [
+    res_media_id: 
       {
         type: string,
       },
-    ],
     res_comentarios: [
       {
         type: mongoose.Schema.Types.ObjectId,
