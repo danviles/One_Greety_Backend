@@ -49,15 +49,19 @@ const autenticar = async (req, res) => {
 
   // Compruebo si el password es correcto
   if (await usuario.comprobarPassword(usu_password)) {
-    res.json({
+    // res.json({
+    //   _id: usuario._id,
+    //   usu_nombre: usuario.nombre,
+    //   usu_email: usuario.email,
+    //   usu_perfil_img: usuario.usu_perfil_img,
+    //   usu_token: generarJWT({
+    //     _id: usuario._id,
+    //   }),
+    // });
+    usuario.usu_token = generarJWT({
       _id: usuario._id,
-      usu_nombre: usuario.nombre,
-      usu_email: usuario.email,
-      usu_perfil_img: usuario.usu_perfil_img,
-      usu_token: generarJWT({
-        _id: usuario._id,
-      }),
     });
+    res.json(usuario);
   } else {
     const error = new Error("El password es incorrecto");
     return res.status(403).json({ msg: error.message });
@@ -112,11 +116,9 @@ const recuperarPassword = async (req, res) => {
 const comprobarToken = async (req, res) => {
   const { token } = req.params;
   const usuario = await Usuario.findOne({usu_token: token});
-  console.log(token)
 
   if (!usuario) {
     const error = new Error("Token no valido.");
-    console.log
     return res.status(403).json({ msg: error.message });
   }
 
