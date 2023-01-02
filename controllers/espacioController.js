@@ -408,7 +408,8 @@ const obtenerTodosEspacios = async (req, res) => {
 const obtenerUnicoEspacio = async (req, res) => {
   const espacio = await Espacio.findById(req.params.id)
   .populate("esp_administrador", "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v")
-  .populate("esp_foro");
+  .populate({path: "esp_foro", populate: {path: "post_creador", select: "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v"}})
+  // .populate("esp_foro.post_creador", "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v");
   res.json(espacio);
 }
 
