@@ -1,5 +1,6 @@
 import Post from '../models/Post.js';
 import Espacio from '../models/Espacio.js';
+import Respuesta from '../models/Respuesta.js';
 
 const obtenerPost = async (req, res) => {
   const { id } = req.params;
