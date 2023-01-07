@@ -17,11 +17,11 @@ const respuestaSchema = new mongoose.Schema(
     },
     res_media_img: 
       {
-        type: string,
+        type: String,
       },
     res_media_id: 
       {
-        type: string,
+        type: String,
       },
     res_comentarios: [
       {
