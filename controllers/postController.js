@@ -161,7 +161,7 @@ const agregarRespuesta = async (req, res) => {
   const nuevaRespuesta = new Respuesta(req.body);
   nuevaRespuesta.res_creador = req.usuario._id;
   nuevaRespuesta.res_post = id;
-  postExistente.post_respuestas.push(nuevaRespuesta._id);
+  postExistente.post_comentarios.push(nuevaRespuesta._id);
 
   try {
     await nuevaRespuesta.save();
