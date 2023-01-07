@@ -29,7 +29,7 @@ const respuestaSchema = new mongoose.Schema(
         ref: "Respuesta",
       },
     ],
-    post_likes: [
+    res_likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Usuario",

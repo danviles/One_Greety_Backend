@@ -141,9 +141,6 @@ const actualizarLike = async (req, res) => {
 
 const agregarRespuesta = async (req, res) => {
 
-  console.log(req.body);
-  console.log(req.params);
-
   const { id } = req.params;
 
   const postExistente = await Post.findById(id).populate('post_espacio');
