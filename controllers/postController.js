@@ -141,14 +141,20 @@ const actualizarLike = async (req, res) => {
 
 const agregarRespuesta = async (req, res) => {
 
+  let esRespuesta = false;
+
   const { id } = req.params;
 
-  const postExistente = await Post.findById(id).populate('post_espacio');
-
+  let postExistente = await Post.findById(id).populate('post_espacio');
+  
   if (!postExistente) {
+    postExistente = await Respuesta.findById(id)
+    esRespuesta = true;
+    if (!postExistente) { 
     const error = new Error('Post no encontrado');
     return res.status(404).json({ message: error.message });
   }
+}
 
   if (postExistente.post_espacio.esp_seguidores.indexOf(req.usuario._id) === -1) {
     const error = new Error('Acción no valida');
@@ -158,6 +164,7 @@ const agregarRespuesta = async (req, res) => {
   const nuevaRespuesta = new Respuesta(req.body);
   nuevaRespuesta.res_creador = req.usuario._id;
   nuevaRespuesta.res_post = id;
+  esRespuesta ? postExistente.res_comentarios.push(nuevaRespuesta._id) :
   postExistente.post_comentarios.push(nuevaRespuesta._id);
 
   try {
