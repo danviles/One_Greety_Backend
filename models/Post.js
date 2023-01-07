@@ -18,10 +18,12 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    post_likes: {
-      type: Number,
-      default: 0,
-    },
+    post_likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Usuario",
+      },
+    ],
     post_comentarios: [
       {
         type: mongoose.Schema.Types.ObjectId,

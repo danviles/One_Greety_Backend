@@ -29,10 +29,12 @@ const respuestaSchema = new mongoose.Schema(
         ref: "Respuesta",
       },
     ],
-    res_likes: {
-      type: Number,
-      default: 0,
-    },
+    post_likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Usuario",
+      },
+    ],
   },
   {
     timestamps: true,

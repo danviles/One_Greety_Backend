@@ -5,7 +5,8 @@ import {
   actualizarPost, 
   eliminarPost, 
   agregarRespuesta, 
-  eliminarRespuesta
+  eliminarRespuesta,
+  actualizarLike
 } from "../controllers/postController.js";
 import checkAuth from "../middleware/checkAuth.js";
 
@@ -21,5 +22,6 @@ router
   .delete(checkAuth, eliminarPost);
 router.post("/:id/respuestas", checkAuth, agregarRespuesta)
 router.post("/:id/respuestas/:idRespuesta", checkAuth, eliminarRespuesta);
+router.post("/:id/likes", checkAuth, actualizarLike);
 
 export default router;
