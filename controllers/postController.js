@@ -156,10 +156,10 @@ const agregarRespuesta = async (req, res) => {
   }
 }
 
-  if (postExistente.post_espacio.esp_seguidores.indexOf(req.usuario._id) === -1) {
-    const error = new Error('Acción no valida');
-    return res.status(404).json({ message: error.message });
-  }
+  // if (postExistente.post_espacio.esp_seguidores.indexOf(req.usuario._id) === -1) {
+  //   const error = new Error('Acción no valida');
+  //   return res.status(404).json({ message: error.message });
+  // }
 
   const nuevaRespuesta = new Respuesta(req.body);
   nuevaRespuesta.res_creador = req.usuario._id;
