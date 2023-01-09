@@ -8,7 +8,6 @@ import filesRoutes from "./routes/filesRoutes.js";
 import connectCloudinary from "./config/cloudinary.js";
 import cors from "cors";
 
-
 const app = express();
 app.use(express.json());
 
@@ -26,18 +25,39 @@ const corsOptions = {
     } else {
       callback(new Error(`Acceso no permitido por CORS ${origin}`));
     }
-  }
+  },
 };
-
 
 app.use(cors());
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/espacios", espacioRoutes);
 app.use("/api/foros", postRoutes);
 
-app.use("/api/files",  filesRoutes);
+app.use("/api/files", filesRoutes);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
+
+// Socket.io
+
+import { Server } from "socket.io";
+
+const io = new Server(server, {
+  pingTimeout: 60000,
+});
+
+io.on("connection", (socket) => {
+  console.log("Usuario conectado socket.io");
+  
+  socket.on("chat room", (espacio_id) => {
+    console.log('id' + espacio_id);
+    socket.join(espacio_id);
+  });
+
+  socket.on("chat msg", (espacio_id, chatMsgs) => {
+    console.log('chat msg', espacio_id, chatMsgs);
+    io.to(espacio_id).emit("chat actualizado", espacio_id, chatMsgs);
+  });
 });
