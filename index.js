@@ -56,8 +56,8 @@ io.on("connection", (socket) => {
     socket.join(espacio_id);
   });
 
-  socket.on("chat msg", (espacio_id, chatMsgs) => {
-    console.log('chat msg', espacio_id, chatMsgs);
-    io.to(espacio_id).emit("chat actualizado", espacio_id, chatMsgs);
+  socket.on("nuevo msg", (chatMsgs, esp_id) => {
+    console.log(chatMsgs, esp_id);
+    socket.to(esp_id).emit('msg agregado', chatMsgs, esp_id);
   });
 });
