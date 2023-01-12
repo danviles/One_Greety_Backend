@@ -147,7 +147,9 @@ const nuevoPassword = async (req, res) => {
 
 const perfil = async (req, res) => {
   const { usuario } = req;
-  res.json(usuario);
+  const usuperfil = await Usuario.findById(usuario._id)
+  .populate({path: "usu_espacios", populate: {path: "esp_administrador", select: "usu_nombre usu_perfil_img"}})
+  res.json(usuperfil);
 }
 
 const editarPerfil = async (req, res) => {
@@ -167,10 +169,31 @@ const editarPerfil = async (req, res) => {
   usuario.usu_region = req.body.usu_region || usuario.usu_region;
   usuario.usu_perfil_img = req.body.usu_perfil_img || usuario.usu_perfil_img;
   usuario.usu_img_id = req.body.usu_img_id || usuario.usu_img_id;
+  usuario.usu_twitter = req.body.usu_twitter;
+  usuario.usu_tiktok = req.body.usu_tiktok;
+  usuario.usu_instagram = req.body.usu_instagram;
+  usuario.usu_spotify = req.body.usu_spotify;
+  usuario.usu_soundcloud = req.body.usu_soundcloud;
+  usuario.usu_youtube = req.body.usu_youtube;
+
 
   const usuarioAct = await usuario.save();
   res.json({ msg: "Perfil actualizado correctamente.", usuario: usuarioAct });
 
 }
 
-export { registrar, autenticar, confirmar, recuperarPassword, comprobarToken, nuevoPassword, perfil, editarPerfil };
+const obtenerPerfilUsuario = async (req, res) => {
+  const { id } = req.params;
+  const usuario = await Usuario.findById(id)
+  .select("-usu_confirmado -createdAt -usu_password -usu_token -updatedAt -usu_img_id -usu_region -__v ")
+  .populate({path: "usu_espacios", populate: {path: "esp_administrador", select: "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v"}})
+
+
+  if (!usuario) {
+    return res.status(404).json({ msg: "Usuario no encontrado." });
+  }
+
+  res.json(usuario);
+}
+
+export { registrar, autenticar, confirmar, recuperarPassword, comprobarToken, nuevoPassword, perfil, editarPerfil, obtenerPerfilUsuario };

@@ -54,6 +54,24 @@ const usuarioSchema = new mongoose.Schema(
     usu_region: {
       type: String,
       default: "Global",
+    },
+    usu_twitter: {
+      type: String,
+    },
+    usu_tiktok: {
+      type: String,
+    },
+    usu_youtube: {
+      type: String,
+    },
+    usu_instagram: {
+      type: String,
+    },
+    usu_spotify: {
+      type: String,
+    },
+    usu_soundcloud: {
+      type: String,
     }
   },
   {
