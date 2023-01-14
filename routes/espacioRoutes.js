@@ -15,7 +15,8 @@ import {
   agregarBaneo,
   eliminarBaneo,
   obtenerTodosEspacios,
-  obtenerUnicoEspacio
+  obtenerUnicoEspacio,
+  agregarSeguidor
 } from "../controllers/espacioController.js";
 import checkAuth from "../middleware/checkAuth.js";
 
@@ -40,7 +41,8 @@ router.post("/busqueda-usuarios", checkAuth, buscarUsuario);
 router.post("/colaboradores/:id", checkAuth, agregarColaborador);
 router.post("/eliminar-colaboradores/:id", checkAuth, eliminarColaborador);
 
-router.post("/peticiones/:id", checkAuth, agregarPeticion);
+router.get("/seguidores/:id", checkAuth, agregarSeguidor);
+router.get("/peticiones/:id", checkAuth, agregarPeticion);
 router.post("/rechazar-peticion/:id", checkAuth, rechazarPeticion);
 router.post("/aceptar-peticion/:id", checkAuth, aceptarPeticion);
 router.get("/aceptar-peticiones/:id", checkAuth, aceptarPeticiones);

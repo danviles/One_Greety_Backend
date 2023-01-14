@@ -196,4 +196,5 @@ const obtenerPerfilUsuario = async (req, res) => {
   res.json(usuario);
 }
 
-export { registrar, autenticar, confirmar, recuperarPassword, comprobarToken, nuevoPassword, perfil, editarPerfil, obtenerPerfilUsuario };
+
+export { registrar, autenticar, confirmar, recuperarPassword, comprobarToken, nuevoPassword, perfil, editarPerfil, obtenerPerfilUsuario, };

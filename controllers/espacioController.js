@@ -417,6 +417,34 @@ const obtenerUnicoEspacio = async (req, res) => {
 const obtenerPosts = async (req, res) => {
 };
 
+const agregarSeguidor = async (req, res) => {
+  const espacio = await Espacio.findById(req.params.id);
+
+  if (!espacio) {
+    const error = new Error("Espacio No Encontrado");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (espacio.esp_baneados.includes(req.usuario._id)) {
+    const error = new Error("El Usuario está baneado");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (espacio.esp_seguidores.includes(req.usuario._id)) {
+    const error = new Error("El Usuario ya está siguiendo este espacio");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  const usuario = await Usuario.findById(req.usuario._id)
+
+  usuario.usu_espacios.push(espacio._id);
+  espacio.esp_seguidores.push(req.usuario._id);
+
+  await espacio.save();
+  await usuario.save();
+  res.json({ msg: "Espacio seguido" });
+}
+
 export {
   obtenerEspacios,
   obtenerEspacio,
@@ -428,11 +456,12 @@ export {
   obtenerPosts,
   buscarUsuario,
   agregarPeticion,
+  agregarSeguidor,
   rechazarPeticion,
   aceptarPeticion,
   aceptarPeticiones,
   agregarBaneo,
   eliminarBaneo,
   obtenerTodosEspacios,
-  obtenerUnicoEspacio
+  obtenerUnicoEspacio,
 };
