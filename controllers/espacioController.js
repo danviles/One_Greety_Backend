@@ -445,6 +445,29 @@ const agregarSeguidor = async (req, res) => {
   res.json({ msg: "Espacio seguido" });
 }
 
+const eliminarSeguidor = async (req, res) => {
+  const espacio = await Espacio.findById(req.params.id);
+
+  if (!espacio) {
+    const error = new Error("Espacio No Encontrado");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (!espacio.esp_seguidores.includes(req.usuario._id)) {
+    const error = new Error("El Usuario no está siguiendo este espacio");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  const usuario = await Usuario.findById(req.usuario._id)
+
+  usuario.usu_espacios.pop(espacio._id);
+  espacio.esp_seguidores.pop(req.usuario._id);
+
+  await espacio.save();
+  await usuario.save();
+  res.json({ msg: "Espacio dejado de seguir" });
+}
+
 export {
   obtenerEspacios,
   obtenerEspacio,
@@ -464,4 +487,5 @@ export {
   eliminarBaneo,
   obtenerTodosEspacios,
   obtenerUnicoEspacio,
+  eliminarSeguidor,
 };

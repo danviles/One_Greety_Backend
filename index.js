@@ -46,8 +46,7 @@ import { Server } from "socket.io";
 
 const io = new Server(server, {
   pingTimeout: 60000,
-
-}, console.log('socket.io'));
+});
 
 io.on("connection", (socket) => {
   console.log("Usuario conectado socket.io");
