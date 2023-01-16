@@ -4,6 +4,7 @@ import {
   crearPost, 
   actualizarPost, 
   eliminarPost, 
+  destacarPost,
   agregarRespuesta, 
   eliminarRespuesta,
   actualizarLike
@@ -23,5 +24,6 @@ router
 router.post("/:id/respuestas", checkAuth, agregarRespuesta)
 router.post("/:id/respuestas/:idRespuesta", checkAuth, eliminarRespuesta);
 router.post("/:id/likes", checkAuth, actualizarLike);
+router.get("/:id/destacar", checkAuth, destacarPost); 
 
 export default router;
