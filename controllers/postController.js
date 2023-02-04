@@ -4,10 +4,16 @@ import Respuesta from "../models/Respuesta.js";
 
 const obtenerPost = async (req, res) => {
   const { id } = req.params;
-  const postExistente = await Post.findById(id).populate("post_espacio");
+  const postExistente = await Post.findById(id)
+  .populate("post_espacio")
+  .populate("post_comentarios")
+  .populate("post_creador", "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v")
+  .populate({path: "post_comentarios", populate: {path: "res_creador", select: "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v"}})
+  .populate({path: "post_comentarios", populate: {path: "res_comentarios", populate: {path: "res_creador", select: "-usu_confirmado -usu_password -usu_token -usu_rol -usu_espacios -usu_esp_colaborador -usu_img_id -createdAt -updatedAt -__v"}}});
+  
 
   if (!postExistente) {
-    const error = new Error("Post no encontrado");
+    const error = new Error("Post no encontrado 5");
     return res.status(404).json({ message: error.message });
   }
 
@@ -47,33 +53,51 @@ const crearPost = async (req, res) => {
 
 const actualizarPost = async (req, res) => {
   const { id } = req.params;
-  let postExistente;
-  try {
-    postExistente = await Post.findById(id);
-  } catch (error) {
-    return res.status(404).json({ message: "Algo salio mal con esta acción." });
-  }
+
+  const postExistente = await Post.findById(id).populate("post_comentarios");
+  const espacioExistente = await Espacio.findById(postExistente.post_espacio);
 
   if (!postExistente) {
-    const error = new Error("Post no encontrado");
+    const error = new Error("Post no encontrado 4");
     return res.status(404).json({ message: error.message });
   }
 
-  if (postExistente.post_creador.toString() !== req.usuario._id.toString()) {
-    const error = new Error("Acción no valida");
+  if (!espacioExistente) {
+    const error = new Error("Espacio no encontrado");
     return res.status(404).json({ message: error.message });
+  }
+
+  if (
+    espacioExistente.esp_administrador.toString() !== req.usuario._id.toString()
+  ) {
+    console.log("No es el creador del espacio");
+    console.log(espacioExistente.esp_administrador + " !== " + req.usuario._id);
+    if (
+      espacioExistente.esp_colaboradores.indexOf(req.usuario._id.toString()) ===
+      -1
+    ) {
+      console.log("No es colaborador del espacio");
+      if (
+        postExistente.post_creador.toString() !== req.usuario._id.toString()
+      ) {
+        console.log("No es creador del post");
+        console.log(postExistente.post_creador + " !== " + req.usuario._id);
+        const error = new Error("Acción no valida");
+        return res.status(404).json({ message: error.message });
+      }
+    }
   }
 
   postExistente.post_titulo = req.body.post_titulo || postExistente.post_titulo;
   postExistente.post_contenido =
     req.body.post_contenido || postExistente.post_contenido;
-  // postExistente.post_media_img = req.body.post_media_img || postExistente.post_media_img;
-  // postExistente.post_media_id = req.body.post_media_id || postExistente.post_media_id;
-  // postExistente.post_tags = req.body.post_tags || postExistente.post_tags;
-  // postExistente.post_respuestas = req.body.post_respuestas || postExistente.post_respuestas;
-  // postExistente.post_likes = req.body.post_likes || postExistente.post_likes;
-  // postExistente.post_espacio = req.body.post_espacio || postExistente.post_espacio;
-  // postExistente.post_creador = req.body.post_creador || postExistente.post_creador;
+  postExistente.post_media_img = req.body.post_media_img
+  postExistente.post_media_id = req.body.post_media_id
+  postExistente.post_tags = req.body.post_tags || postExistente.post_tags;
+  postExistente.post_respuestas = req.body.post_respuestas || postExistente.post_respuestas;
+  postExistente.post_likes = req.body.post_likes || postExistente.post_likes;
+  postExistente.post_espacio = req.body.post_espacio || postExistente.post_espacio;
+  postExistente.post_creador = req.body.post_creador || postExistente.post_creador;
 
   try {
     const postActualizado = await postExistente.save();
@@ -90,7 +114,7 @@ const eliminarPost = async (req, res) => {
   const espacioExistente = await Espacio.findById(postExistente.post_espacio);
 
   if (!postExistente) {
-    const error = new Error("Post no encontrado");
+    const error = new Error("Post no encontrado 3");
     return res.status(404).json({ message: error.message });
   }
 
@@ -141,7 +165,7 @@ const actualizarLike = async (req, res) => {
   const postExistente = await Post.findById(id).populate("post_espacio");
 
   if (!postExistente) {
-    const error = new Error("Post no encontrado");
+    const error = new Error("Post no encontrado 2");
     return res.status(404).json({ message: error.message });
   }
 
@@ -178,7 +202,7 @@ const agregarRespuesta = async (req, res) => {
     postExistente = await Respuesta.findById(id);
     esRespuesta = true;
     if (!postExistente) {
-      const error = new Error("Post no encontrado");
+      const error = new Error("Post no encontrado 1");
       return res.status(404).json({ message: error.message });
     }
   }
@@ -191,6 +215,7 @@ const agregarRespuesta = async (req, res) => {
   const nuevaRespuesta = new Respuesta(req.body);
   nuevaRespuesta.res_creador = req.usuario._id;
   nuevaRespuesta.res_post = id;
+  console.log(esRespuesta)
   esRespuesta
     ? postExistente.res_comentarios.push(nuevaRespuesta._id)
     : postExistente.post_comentarios.push(nuevaRespuesta._id);
@@ -210,7 +235,7 @@ const eliminarRespuesta = async (req, res) => {
   const postExistente = await Post.findById(id).populate("post_espacio");
 
   if (!postExistente) {
-    const error = new Error("Post no encontrado");
+    const error = new Error("Post no encontrado 6");
     return res.status(404).json({ message: error.message });
   }
 
@@ -254,7 +279,7 @@ const destacarPost = async (req, res) => {
   const espacioExistente = await Espacio.findById(postExistente.post_espacio);
 
   if (!postExistente) {
-    const error = new Error("Post no encontrado");
+    const error = new Error("Post no encontrado 7");
     return res.status(404).json({ message: error.message });
   }
 

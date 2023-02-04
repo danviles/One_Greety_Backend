@@ -20,4 +20,11 @@ const editImage = async (req, res) => {
   });
 }
 
-export { uploadImage, editImage };
+const deleteImage = async (req, res) => {
+  const result = await cloudinary.v2.uploader.destroy(req.body.imgId);
+  res.send({
+    message: "Image deleted"
+  });
+}
+
+export { uploadImage, editImage, deleteImage };
