@@ -42,10 +42,13 @@ const obtenerEspacio = async (req, res) => {
 
 const crearEspacio = async (req, res) => {
   const nuevoEspacio = new Espacio(req.body);
+  const usuario = await Usuario.findById(req.usuario._id);
   nuevoEspacio.esp_administrador = req.usuario._id;
   nuevoEspacio.esp_seguidores = [req.usuario._id];
-
+  usuario.usu_espacios = [...usuario.usu_espacios, nuevoEspacio._id];
+  
   try {
+    await usuario.save();
     const espacioCreado = await nuevoEspacio.save();
     res.json({ msg: "Espacio creado correctamente", espacio: espacioCreado });
   } catch (error) {
@@ -202,7 +205,7 @@ const agregarPeticion = async (req, res) => {
     return res.status(404).json({ msg: error.message });
   }
 
-  const { _id } = req.body;
+  const { _id } = req.usuario;
   const usuario = await Usuario.findOne({ _id }).select(
     "-usu_confirmado -createdAt -usu_password -usu_token -updatedAt -__v "
   );

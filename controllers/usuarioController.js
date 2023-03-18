@@ -21,7 +21,11 @@ const registrar = async (req, res) => {
     await nuevoUsuario.save();
 
     // Envio el email de confirmacion
-    emailRegistro({nombre: nuevoUsuario.usu_nombre, email: nuevoUsuario.usu_email, token: nuevoUsuario.usu_token});
+    emailRegistro({
+      nombre: nuevoUsuario.usu_nombre,
+      email: nuevoUsuario.usu_email,
+      token: nuevoUsuario.usu_token
+    });
     res.json({
       msg: "Usuario registrado correctamente, se ha enviado un email para confirmar el registro."
     });
